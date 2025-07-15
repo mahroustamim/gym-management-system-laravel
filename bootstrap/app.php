@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->prepend('\Illuminate\Session\Middleware\StartSession::class');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
