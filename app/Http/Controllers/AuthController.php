@@ -44,11 +44,11 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            return response()->json(['errors' => ['email' => 'Invalid Email']], 401);
+            return response()->json(['errors' => ['email' => 'البريد الاكتروني غير صحيح']], 401);
         }
 
         if (!Hash::check($request->password, $user->password)) {
-            return response()->json(['errors' => ['password' => 'Invalid Password']], 401);
+            return response()->json(['errors' => ['password' => 'كلمة السر غير صحيحة']], 401);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -64,7 +64,7 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Logged out successfully'], 200);
+        return response()->json(['message' => 'تم تسجيل الخروج بنجاح'], 200);
     }
 
     public function user(Request $request)
