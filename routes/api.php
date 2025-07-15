@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SaasSubscriptionPlanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
 
 
 
@@ -15,6 +18,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('saas-plans', SaasSubscriptionPlanController::class);
     });
 
 });
