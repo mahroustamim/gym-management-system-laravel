@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\SaasSubscriptionPlanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -19,6 +21,8 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('saas-plans', SaasSubscriptionPlanController::class);
+        Route::get('/saas-logs', [LogController::class, 'saas']);
+        Route::get('/gym-logs', [LogController::class, 'gym']);
     });
 
 });
