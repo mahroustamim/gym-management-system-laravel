@@ -34,7 +34,8 @@ class SaasSubscriptionPlanController extends Controller
     {
         $fields = $request->validate([
             'name' => 'required|string|max:255',
-            'duration_days' => 'required|integer|min:1',
+            'duration_type' => 'required|in:daily,weekly,monthly,yearly',
+            'duration_count' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
             'employee_limit' => 'required|integer|min:1',
             'features' => 'required|array',
@@ -73,7 +74,8 @@ class SaasSubscriptionPlanController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'duration_days' => 'sometimes|integer|min:1',
+            'duration_type' => 'sometimes|in:daily,weekly,monthly,yearly',
+            'duration_count' => 'sometimes|integer|min:1',
             'price' => 'sometimes|numeric|min:0',
             'employee_limit' => 'sometimes|integer|min:1',
             'features' => 'sometimes|array',

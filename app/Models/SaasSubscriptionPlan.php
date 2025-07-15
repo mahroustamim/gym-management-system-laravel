@@ -8,7 +8,8 @@ class SaasSubscriptionPlan extends Model
 {
     protected $fillable = [
         'name',
-        'duration_days',
+        'duration_type',
+        'duration_count',
         'price',
         'employee_limit',
         'features',

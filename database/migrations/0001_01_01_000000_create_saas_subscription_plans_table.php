@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('saas_subscription_plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('duration_days');
+            $table->enum('duration_type', ['daily', 'weekly', 'monthly', 'yearly']);
+            $table->integer('duration_count')->default(1);
             $table->decimal('price', 10, 2);
             $table->integer('employee_limit');
             $table->json('features');
