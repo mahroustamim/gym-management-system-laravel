@@ -23,12 +23,17 @@ class Gym extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function gymPlans()
     {
         return $this->hasMany(GymSubscriptionPlan::class);
+    }
+
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
     }
 
     public function trainers()

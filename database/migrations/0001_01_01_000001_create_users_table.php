@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('gym_id')->nullable()->constrained('gyms')->nullOnDelete();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -22,8 +21,7 @@ return new class extends Migration
             $table->string('social_id')->nullable();
             $table->string('social_type')->nullable();
             $table->decimal('money_balance', 10, 2)->default(0);
-            $table->enum('role', ['saas_admin', 'gym_admin', 'employee']);
-            $table->json('permissions')->nullable();
+            $table->enum('role', ['saas_admin', 'gym_admin'])->default('gym_admin');
             $table->string('otp')->nullable();
             $table->timestamp('otp_expires_at')->nullable();
             $table->rememberToken();

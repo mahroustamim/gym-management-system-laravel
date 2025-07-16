@@ -23,12 +23,10 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'gym_id',
         'social_id',
         'social_type',
         'money_balance',
         'role',
-        'permissions',
         'otp',
         'otp_expires_at',
     ];
@@ -53,13 +51,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'permissions' => 'array',
             'otp_expires_at' => 'datetime',
         ];
     }
 
     public function gym()
     {
-        return $this->belongsTo(Gym::class);
+        return $this->hasMany(Gym::class);
     }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('address');
             $table->string('logo')->nullable();
             $table->foreignId('subscription_plan_id')->constrained('saas_subscription_plans');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->enum('status', ['active', 'ended', 'frozen']);
             $table->timestamps();
         });
