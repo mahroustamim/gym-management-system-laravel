@@ -14,6 +14,7 @@ class Gym extends Model
         'logo',
         'subscription_plan_id',
         'status',
+        'user_id',
     ];
 
     public function saasPlan()

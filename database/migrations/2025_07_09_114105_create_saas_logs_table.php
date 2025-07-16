@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('model_type');
             $table->unsignedBigInteger('model_id');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('action', ['created', 'updated', 'deleted']);
             $table->json('changes');
             $table->timestamps();

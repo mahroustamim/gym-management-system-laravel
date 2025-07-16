@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('gym_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('gym_id')->constrained();
+            $table->foreignId('gym_id')->constrained()->onDelete('cascade');
             $table->string('model_type');
             $table->unsignedBigInteger('model_id');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('action', ['created', 'updated', 'deleted']);
             $table->json('changes');
             $table->timestamps();
