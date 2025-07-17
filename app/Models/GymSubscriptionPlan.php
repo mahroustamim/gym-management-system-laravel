@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class GymSubscriptionPlan extends Model
 {
+    protected $table = 'gym_subscription_plans';
+
     protected $fillable = [
         'gym_id',
         'name',
-        'duration_days',
+        'duration_type',
+        'duration_count',
         'price',
         'notes',
     ];

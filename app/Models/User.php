@@ -57,6 +57,6 @@ class User extends Authenticatable
 
     public function gym()
     {
-        return $this->hasMany(Gym::class);
+        return $this->hasOne(Gym::class);
     }
 }
