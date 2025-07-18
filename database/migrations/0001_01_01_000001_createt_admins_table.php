@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('gym_id')->nullable()->constrained('gyms')->nullOnDelete();
-            $table->timestamps();
+            $table->string('social_id')->nullable();
+            $table->string('social_type')->nullable();
+            $table->decimal('money_balance', 10, 2)->default(0);
+            $table->string('otp')->nullable();
+            $table->timestamp('otp_expires_at')->nullable();
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('admins');
     }
 };

@@ -18,12 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone');
-            $table->string('social_id')->nullable();
-            $table->string('social_type')->nullable();
-            $table->decimal('money_balance', 10, 2)->default(0);
-            $table->enum('role', ['saas_admin', 'gym_admin'])->default('gym_admin');
-            $table->string('otp')->nullable();
-            $table->timestamp('otp_expires_at')->nullable();
+            $table->string('profile_photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

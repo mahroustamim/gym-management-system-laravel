@@ -16,16 +16,13 @@ class Employee extends Model
         'permissions',
     ];
 
-    public function casts(): array
-    {
-        return [
-            'permissions' => 'array',
-            'password' => 'hashed',
-        ];
-    }
-
     public function gym()
     {
         return $this->belongsTo(Gym::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
