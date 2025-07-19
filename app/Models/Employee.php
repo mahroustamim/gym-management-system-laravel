@@ -8,12 +8,8 @@ class Employee extends Model
 {
     protected $fillable = [
         'gym_id',
-        'name',
-        'job_name',
-        'email',
-        'password',
-        'phone',
-        'permissions',
+        'user_id',
+        'type'
     ];
 
     public function gym()

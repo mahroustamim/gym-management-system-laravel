@@ -24,10 +24,9 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'role_id',
         'profile_photo',
         'email_verified_at',
-        
+
     ];
 
     /**
@@ -57,5 +56,15 @@ class User extends Authenticatable
     public function gym()
     {
         return $this->hasOne(Gym::class);
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
+    }
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
     }
 }

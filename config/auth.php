@@ -40,6 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'web-system' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'web-gym' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*

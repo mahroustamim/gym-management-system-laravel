@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -23,8 +24,13 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'phone' => $request->phone,
-            'role' => 'gym_admin', // Default role, can be changed as needed
         ]);
+
+        $user->admin()->create(['user_id' => $user->id]);
+
+        $gymAdmin = Role::where('name', 'gym_admin')->first();
+        
+        $user->assignRole($gymAdmin);
 
         $token = $user->createToken('auth_token')->plainTextToken;
         
