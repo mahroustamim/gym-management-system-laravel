@@ -14,7 +14,8 @@ class GymSubscriptionPlanController extends Controller
      */
     public function index()
     {
-        $plans = GymSubscriptionPlan::where('gym_id', Auth::user()->gym->id)->paginate(10);
+        $gymId = Auth::user()->gym->id ?? Auth::user()->employee->gym_id;
+        $plans = GymSubscriptionPlan::where('gym_id', $gymId)->paginate(10);
 
         return response()->json([
             'data' => $plans->items(),
@@ -45,7 +46,7 @@ class GymSubscriptionPlanController extends Controller
         $plan = GymSubscriptionPlan::create($fields);
 
         GymLog::create([
-            'gym_id' => Auth::user()->gym->id,
+            'gym_id' => Auth::user()->gym->id ?? Auth::user()->employee->gym_id ?? null,
             'model_type' => GymSubscriptionPlan::class,
             'model_id' => $plan->id,
             'user_id' => Auth::user()->id,
@@ -89,7 +90,7 @@ class GymSubscriptionPlanController extends Controller
         $changes = array_diff_assoc($original, $current);
 
         GymLog::create([
-            'gym_id' => Auth::user()->gym->id,
+            'gym_id' => Auth::user()->gym->id ?? Auth::user()->employee->gym_id ?? null,
             'model_type' => GymSubscriptionPlan::class,
             'model_id' => $plan->id,
             'user_id' => Auth::user()->id,
@@ -110,7 +111,7 @@ class GymSubscriptionPlanController extends Controller
         $plan->delete();
 
         GymLog::create([
-            'gym_id' => Auth::user()->gym->id,
+            'gym_id' => Auth::user()->gym->id ?? Auth::user()->employee->gym_id ?? null,
             'model_type' => GymSubscriptionPlan::class,
             'model_id' => $planData->id,
             'user_id' => Auth::user()->id,
