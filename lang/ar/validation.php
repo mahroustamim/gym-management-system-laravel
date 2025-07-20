@@ -123,7 +123,7 @@ return [
         'employee_limit' => 'عدد الموظفين',
         'features' => 'المميزات',
         'subscription_plan_id' => 'خطة الاشتراك',
-        '' => '',
+        'permissions' => 'الصلاحيات',
         '' => '',
         '' => '',
         '' => '',

@@ -5,8 +5,10 @@ use App\Http\Controllers\GymController;
 use App\Http\Controllers\GymSubscriptionPlanController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\SaasSubscriptionPlanController;
+use App\Http\Controllers\SystemRoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -28,6 +30,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/gym-logs', [LogController::class, 'gym']);
         Route::apiResource('gyms', GymController::class);
         Route::apiResource('gym-plans', GymSubscriptionPlanController::class);
+        Route::apiResource('system-roles', SystemRoleController::class);
+        Route::get('system-permissions', [SystemRoleController::class, 'permissions']);
     });
 
 });
