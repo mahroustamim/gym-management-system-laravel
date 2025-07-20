@@ -45,7 +45,7 @@ class SystemRoleController extends Controller
         ]);
 
         if ($request->filled('permissions')) {
-            $permissions = Permission::whereIn('id', $request->permissions)->pluck('name');
+            $permissions = Permission::where('guard_name', 'web-system')->whereIn('id', $request->permissions)->pluck('name');
             $role->givePermissionTo($permissions);
         }
 
@@ -108,7 +108,7 @@ class SystemRoleController extends Controller
         $role->save();
 
         if ($request->filled('permissions')) {
-            $permissions = Permission::whereIn('id', $request->permissions)->pluck('name');
+            $permissions = Permission::where('guard_name', 'web-system')->whereIn('id', $request->permissions)->pluck('name');
             $role->syncPermissions($permissions);
         }
 
