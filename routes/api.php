@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GymController;
+use App\Http\Controllers\GymRoleController;
 use App\Http\Controllers\GymSubscriptionPlanController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\SaasSubscriptionPlanController;
@@ -16,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
 Route::prefix('v1')->group(function () {
-    
+
     // auth routes
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
@@ -32,7 +34,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('gym-plans', GymSubscriptionPlanController::class);
         Route::apiResource('system-roles', SystemRoleController::class);
         Route::get('system-permissions', [SystemRoleController::class, 'permissions']);
+        Route::apiResource('gym-roles', GymRoleController::class);
+        Route::get('gym-permissions', [GymRoleController::class, 'permissions']);
     });
-
 });
-
