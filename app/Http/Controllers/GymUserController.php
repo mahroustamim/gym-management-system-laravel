@@ -2,44 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
+use App\Models\Gym;
+use App\Models\GymLog;
 use App\Models\Role;
-use App\Models\SaasLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class SystemUserController extends Controller
+class GymUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = User::whereHas('employee', function ($query) {
-            $query->where('type', 'system');
+        $gymId = Auth::user()->gym->id ?? Auth::user()->employee->gym_id;
+
+        $users = User::whereHas('employee', function ($query) use ($gymId) {
+            $query->where('type', 'gym')->where('gym_id', $gymId);
         })
             ->with('employee')
             ->paginate(10);
 
         return response()->json([
-            'users' => $user->items(),
+            'users' => $users->items(),
             'pagination' => [
-                'total' => $user->total(),
-                'count' => $user->count(),
-                'per_page' => $user->perPage(),
-                'current_page' => $user->currentPage(),
-                'last_page' => $user->lastPage(),
+                'total' => $users->total(),
+                'count' => $users->count(),
+                'per_page' => $users->perPage(),
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
             ]
         ], 200);
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        $gymId = Auth::user()->gym->id ?? Auth::user()->employee->gym_id ?? null;
+
+        // validate request
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -48,8 +52,8 @@ class SystemUserController extends Controller
             'role_id' => 'required|exists:roles,id',
         ]);
 
-        $role = Role::where('id', $request->id)->where('guard_name', 'web-system')->firsOrFail();
-
+        // get right role
+        $role = Role::where('id', $request->role_id)->where('gym_id', $gymId)->where('guard_name', 'web-gym')->firstOrFail();
 
         $user = User::create([
             'name' => $request->name,
@@ -60,13 +64,14 @@ class SystemUserController extends Controller
 
         $user->employee()->create([
             'user_id' => $user->id,
-            'gym_id' => Auth::user()->gym->id ?? Auth::user()->employee->gym_id ?? null,
-            'type' => 'system',
+            'gym_id' => $gymId,
+            'type' => 'gym',
         ]);
 
         $user->assignRole($role);
 
-        SaasLog::create([
+        GymLog::create([
+            'gym_id' => $gymId,
             'model_type' => User::class,
             'model_id' => $user->id,
             'user_id' => Auth::id(),
@@ -82,9 +87,11 @@ class SystemUserController extends Controller
      */
     public function show(string $id)
     {
+        $gymId = Auth::user()->gym->id ?? Auth::user()->employee->gym_id;
+
         $user = User::where('id', $id)
-            ->whereHas('employee', function ($query) {
-                $query->where('type', 'system');
+            ->whereHas('employee', function ($query) use ($gymId) {
+                $query->where('type', 'gym')->where('gym_id', $gymId);
             })
             ->with('employee')
             ->firstOrFail(); // ✅ uses all conditions safely
@@ -97,9 +104,11 @@ class SystemUserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         $user = User::where('id', $id)
-            ->whereHas('employee', function ($query) {
-                $query->where('type', 'system');
+        $gymId = Auth::user()->gym->id ?? Auth::user()->employee->gym_id;
+
+        $user = User::where('id', $id)
+            ->whereHas('employee', function ($query) use ($gymId) {
+                $query->where('type', 'gym')->where('gym_id', $gymId);
             })
             ->firstOrFail();
 
@@ -115,7 +124,7 @@ class SystemUserController extends Controller
         ]);
 
         if ($request->filled('role_id')) {
-            $role = Role::where('id', $request->id)->where('guard_name', 'web-system')->firsOrFail();
+            $role = Role::where('id', $request->role_id)->where('gym_id', $gymId)->where('guard_name', 'web-gym')->firstOrFail();
             $user->assignRole($role);
         }
 
@@ -135,7 +144,8 @@ class SystemUserController extends Controller
         $user->save();
 
         // Log the changes
-        SaasLog::create([
+        GymLog::create([
+            'gym_id' => $gymId,
             'model_type' => User::class,
             'model_id' => $user->id,
             'user_id' => Auth::id(),
@@ -151,9 +161,11 @@ class SystemUserController extends Controller
      */
     public function destroy(string $id)
     {
+        $gymId = Auth::user()->gym->id ?? Auth::user()->employee->gym_id;
+
         $user = User::where('id', $id)
-            ->whereHas('employee', function ($query) {
-                $query->where('type', 'system');
+            ->whereHas('employee', function ($query) use ($gymId) {
+                $query->where('type', 'gym')->where('gym_id', $gymId);
             })
             ->firstOrFail();
 
@@ -162,7 +174,8 @@ class SystemUserController extends Controller
 
         $user->delete();
 
-        SaasLog::create([
+        GymLog::create([
+            'gym_id' => $gymId,
             'model_type' => User::class,
             'model_id' => $userData->id,
             'user_id' => Auth::id(),
@@ -175,7 +188,7 @@ class SystemUserController extends Controller
 
     public function roles()
     {
-        $roles = Role::where('guard_name', 'web-system')->select('id', 'name')->get();
+        $roles = Role::where('guard_name', 'web-gym')->select('id', 'name')->get();
         return response()->json([
             'roles' => $roles,
         ], 200);

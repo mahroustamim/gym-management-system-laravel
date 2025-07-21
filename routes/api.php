@@ -4,12 +4,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\GymRoleController;
 use App\Http\Controllers\GymSubscriptionPlanController;
+use App\Http\Controllers\GymUserController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\SaasSubscriptionPlanController;
 use App\Http\Controllers\SystemRoleController;
 use App\Http\Controllers\SystemUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -33,5 +35,7 @@ Route::prefix('v1')->group(function () {
         Route::get('gym-permissions', [GymRoleController::class, 'permissions']);
         Route::apiResource('system-employees', SystemUserController::class);
         Route::get('system-employees-roles', [SystemUserController::class, 'roles']);
+        Route::apiResource('gym-employees', GymUserController::class);
+        Route::get('gym-employees-roles', [GymUserController::class, 'roles']);
     });
 });
