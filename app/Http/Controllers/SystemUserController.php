@@ -86,7 +86,7 @@ class SystemUserController extends Controller
             ->whereHas('employee', function ($query) {
                 $query->where('type', 'system');
             })
-            ->with('employee')
+            ->with(['employee', 'roles'])
             ->firstOrFail(); // ✅ uses all conditions safely
 
         return response()->json(['user' => $user], 200);

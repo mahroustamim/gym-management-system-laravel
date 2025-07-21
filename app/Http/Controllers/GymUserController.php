@@ -93,9 +93,9 @@ class GymUserController extends Controller
             ->whereHas('employee', function ($query) use ($gymId) {
                 $query->where('type', 'gym')->where('gym_id', $gymId);
             })
-            ->with('employee')
+            ->with(['employee', 'roles'])
             ->firstOrFail(); // ✅ uses all conditions safely
-
+            
         return response()->json(['user' => $user], 200);
     }
 
