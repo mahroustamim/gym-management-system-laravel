@@ -12,7 +12,6 @@ class Trainer extends Model
         'phone',
         'email',
         'specialty',
-        'status',
         'price',
     ];
 

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email');
             $table->string('specialty')->nullable();
-            $table->enum('status', ['active', 'inactive']);
             $table->decimal('price', 10, 2);
             $table->timestamps();
         });
