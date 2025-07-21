@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\GymLog;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class GymRoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
-        $roles = Role::where('guard_name', 'web-gym')->paginate(10);
+        $gymId = Auth::user()->gym->id ?? Auth::user()->employee->gym_id ?? null;
+        $roles = Role::where('gym_id', $gymId)->where('guard_name', 'web-gym')->paginate(10);
 
         return response()->json([
             'data' => $roles->items(),
@@ -40,6 +42,7 @@ class GymRoleController extends Controller
 
         $role = Role::create([
             'name' => $request->name,
+            'gym_id' => Auth::user()->gym->id ?? Auth::user()->employee->gym_id,
             'guard_name' => 'web-gym',
         ]);
 
